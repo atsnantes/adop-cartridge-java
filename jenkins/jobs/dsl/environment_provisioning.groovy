@@ -1,9 +1,10 @@
 // Folders
 def workspaceFolderName = "${WORKSPACE_NAME}"
 def projectFolderName = "${PROJECT_NAME}"
+def projectNameWithoutFolder = "${PROJECT_NAME_WITHOUT_FOLDER}"
 
 // Variables
-def environmentTemplateGitUrl = "ssh://jenkins@bitbucket:7999/${PROJECT_NAME}/adop-cartridge-java-environment-template"
+def environmentTemplateGitUrl = "ssh://jenkins@bitbucket:7999/${PROJECT_NAME_WITHOUT_FOLDER}/adop-cartridge-java-environment-template"
 
 // Jobs
 def environmentProvisioningPipelineView = buildPipelineView(projectFolderName + "/Environment_Provisioning")
@@ -23,6 +24,7 @@ The reference application deploy job is expecting the default environment to be 
     environmentVariables {
         env('WORKSPACE_NAME',workspaceFolderName)
         env('PROJECT_NAME',projectFolderName)
+        env('PROJECT_NAME_WITHOUT_FOLDER',projectNameWithoutFolder)
     }
     wrappers {
         preBuildCleanup()
