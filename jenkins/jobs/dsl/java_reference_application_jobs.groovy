@@ -1,13 +1,14 @@
 // Folders
 def workspaceFolderName = "${WORKSPACE_NAME}"
 def projectFolderName = "${PROJECT_NAME}"
+def projectNameWithoutFolder = "${PROJECT_NAME_WITHOUT_FOLDER}"
 
 // Variables
 def projectNameKey = projectFolderName.toLowerCase().replace("/", "-")
 def referenceAppgitRepo = "spring-petclinic"
 def regressionTestGitRepo = "adop-cartridge-java-regression-tests"
-def referenceAppGitUrl = "ssh://jenkins@bitbucket:7999/${PROJECT_NAME}/" + referenceAppgitRepo
-def regressionTestGitUrl = "ssh://jenkins@bitbucket:7999/${PROJECT_NAME}/" + regressionTestGitRepo
+def referenceAppGitUrl = "ssh://jenkins@bitbucket:7999/${PROJECT_NAME_WITHOUT_FOLDER}/" + referenceAppgitRepo
+def regressionTestGitUrl = "ssh://jenkins@bitbucket:7999/${PROJECT_NAME_WITHOUT_FOLDER}/" + regressionTestGitRepo
 
 // Jobs
 def buildAppJob = freeStyleJob(projectFolderName + "/Reference_Application_Build")
@@ -53,17 +54,17 @@ buildAppJob.with {
         env('PROJECT_NAME', projectFolderName)
     }
     label("java8")
-    triggers {
-        gerrit {
-            events {
-                refUpdated()
-            }
-            project(projectFolderName + '/' + referenceAppgitRepo, 'plain:master')
-            configure { node ->
-                node / serverName("ADOP Gerrit")
-            }
-        }
-    }
+   // triggers {
+       // gerrit {
+       //     events {
+       //         refUpdated()
+       //     }
+       //     project(projectFolderName + '/' + referenceAppgitRepo, 'plain:master')
+       //     configure { node ->
+       //         node / serverName("ADOP Gerrit")
+       //     }
+       // }
+    //}
     steps {
         maven {
             goals('clean install -DskipTests')
